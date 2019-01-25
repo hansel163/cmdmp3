@@ -15,7 +15,7 @@
 #include <string.h>
 #include <stdio.h>
 
-char msg[256];
+char msg[512];
 
 extern int __argc;
 extern char ** __argv;
@@ -59,9 +59,12 @@ int WINAPI WinMain( HINSTANCE hInstance,
    // that produced the error.
 void sendCommand(char *s) {
    int i;
+   char err_msg[256];
+
    i=mciSendString(s,NULL,0,0);
    if(i) {
-         sprintf(msg,"Error %d when sending %s\n",i,s);
+		 mciGetErrorString(i, err_msg, 256);
+         sprintf(msg,"Error %d when sending %s\nError: %s",i,s, err_msg);
          MessageBox(NULL,msg,"cmdmp3win",MB_OK);
    }
 }
